@@ -1,0 +1,43 @@
+/**
+Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.
+https://leetcode.com/problems/median-of-two-sorted-arrays/description/
+*/
+
+Solution: O(m+n /2)
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        return solution(nums1, nums2);
+    }
+
+    static double solution(int[] a, int[] b) {
+        if(a.length > b.length) return solution(b,a);
+
+        int i=0,j=0;
+        int total = (a.length + b.length);
+        while(i+j <(total-1)/2) {
+            if(i == a.length) j++;
+            else if(a[i] < b[j]) i++;
+            else j++;
+        }
+
+        double sol=-1;
+        if(total % 2 ==0) {
+            if( i == a.length) {
+                sol = (double) (b[j] + b[j + 1]) /2;
+            } else {
+                if(a[i] < b[j]) {
+                    if(i == a.length-1) sol = (double) (a[i] + b[j]) /2;
+                    else sol = (double) (a[i] + Math.min(a[i + 1], b[j])) /2;
+                } else {
+                    if(j == b.length-1) sol = (double) (b[j] + a[i]) /2;
+                    else sol = (double) (b[j] + Math.min(b[j + 1], a[i])) /2;
+                }
+            }
+        } else {
+            if( i == a.length)  sol = b[j];
+            else sol = Math.min(a[i],b[j]);
+        }
+
+        return sol;
+    }
+}
